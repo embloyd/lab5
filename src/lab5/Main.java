@@ -103,7 +103,7 @@ public class Main {
 
         System.out.print("Сколько раз мяукнуть? ");
         int meowCount = sc.nextInt();
-        sc.nextLine(); //очистка буфера
+        sc.nextLine();
 
         System.out.println("Кот мяукает " + meowCount + " раз:");
         for (int i = 0; i < meowCount; i++) {
@@ -118,7 +118,6 @@ public class Main {
         Cat cat2 = new Cat(catName2);
         System.out.println("Создан: " + cat2.toString());
 
-        //Создаем декоратор-счетчик
         MeowCounter counter = new MeowCounter(cat2);
 
         System.out.println("Выполняем код из задания:");
@@ -128,13 +127,10 @@ public class Main {
 
         System.out.println("Результат выполнения:");
 
-        //Создаем "мяукающего" через счетчик
         Meowable m = counter;
 
-        //Вызываем метод meowsCare
         Funs.meowsCare(m);
 
-        //Выводим результат
         System.out.println("кот мяукал " + counter.getMeowCount() + " раз");
 
 
@@ -186,10 +182,8 @@ public class Main {
         // Сортируем по баллам (от большего к меньшему)
         students.sort((s1, s2) -> s2.getScore() - s1.getScore());
 
-        // Находим максимальный балл
         int maxScore = students.get(0).getScore();
 
-        // Считаем, сколько учеников набрали максимальный балл
         int count = 0;
         for (Student s : students) {
             if (s.getScore() == maxScore) {
@@ -199,7 +193,6 @@ public class Main {
             }
         }
 
-        // Вывод результата
         System.out.println("Результаты:");
 
         if (count > 2) {
@@ -218,7 +211,6 @@ public class Main {
         System.out.println("Чтение файла: " + fileName);
 
         try {
-            // 1. Читаем текст из файла
             String text = readTextFromFile(fileName);
             if (text == null || text.isEmpty()) {
                 System.out.println("Файл пуст или не найден.");
@@ -228,14 +220,11 @@ public class Main {
             System.out.println("Исходный текст:");
             System.out.println(text);
 
-            // 2. Получаем нечетные слова
             List<String> oddWords = getOddWords(text);
             System.out.println("\nНечетные слова (1, 3, 5...): " + oddWords);
 
-            // 3. Находим общие глухие согласные
             Set<Character> commonVoiceless = findCommonVoicelessConsonants(oddWords);
 
-            // 4. Выводим результат
             System.out.println("Результат:");
             if (commonVoiceless.isEmpty()) {
                 System.out.println("Нет общих глухих согласных в нечетных словах.");
@@ -263,14 +252,12 @@ public class Main {
         return text.toString().trim();
     }
 
-    // Получение нечетных слов (1, 3, 5...)
+    // Получение нечетных
     private static List<String> getOddWords(String text) {
         List<String> words = new ArrayList<>();
 
-        // Разбиваем текст на слова (учитывая русские буквы)
         String[] allWords = text.toLowerCase().split("[^а-яёА-ЯЁ]+");
 
-        // Берем только нечетные по порядку (индексы 0, 2, 4...)
         for (int i = 0; i < allWords.length; i += 2) {
             if (!allWords[i].isEmpty()) {
                 words.add(allWords[i]);
@@ -286,15 +273,12 @@ public class Main {
             return new TreeSet<>();
         }
 
-        // Множество глухих согласных русского языка
         Set<Character> voicelessConsonants = new HashSet<>(Arrays.asList(
                 'п', 'ф', 'к', 'т', 'ш', 'с', 'х', 'ц', 'ч', 'щ'
         ));
 
-        // Начинаем со всеми глухими согласными
         Set<Character> commonConsonants = new HashSet<>(voicelessConsonants);
 
-        // Для каждого слова находим пересечение
         for (String word : words) {
             Set<Character> wordConsonants = new HashSet<>();
 
@@ -305,16 +289,13 @@ public class Main {
                 }
             }
 
-            // Пересечение с уже найденными общими
             commonConsonants.retainAll(wordConsonants);
 
-            // Если уже пусто, дальше можно не проверять
             if (commonConsonants.isEmpty()) {
                 break;
             }
         }
 
-        // Сортируем в алфавитном порядке
         return new TreeSet<>(commonConsonants);
     }
 
@@ -324,11 +305,9 @@ public class Main {
         List<Student> students = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            // Читаем количество учеников
             String line = br.readLine();
             int n = Integer.parseInt(line.trim());
 
-            // Читаем данные каждого ученика
             for (int i = 0; i < n; i++) {
                 line = br.readLine();
                 if (line == null) break;
@@ -341,7 +320,6 @@ public class Main {
                 int school = Integer.parseInt(parts[2]);
                 int score = Integer.parseInt(parts[3]);
 
-                // Берем только школу №50
                 if (school == 50) {
                     students.add(new Student(lastName, firstName, school, score));
                 }
@@ -383,20 +361,19 @@ public class Main {
         System.out.println("Высший балл: " + highestScore);
 
         if (topScoreCount > 2) {
-            // Случай 1: Более 2 учеников с высшим баллом
+            //1
             System.out.println(topScoreCount);
         }
         else if (topScoreCount == 1) {
-            // Случай 2: Один лучший ученик
+            //2
             System.out.println(students.get(0).getFullName());
         }
         else if (topScoreCount == 2) {
-            // Случай 3: Два лучших ученика
+            //3
             System.out.println(students.get(0).getFullName());
             System.out.println(students.get(1).getFullName());
         }
 
-        // Дополнительная информация (для наглядности)
         System.out.println("Топ-5 учеников школы №50");
         for (int i = 0; i < Math.min(5, students.size()); i++) {
             System.out.printf("%d. %s - %d баллов%n",
